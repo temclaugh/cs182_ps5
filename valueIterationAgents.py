@@ -24,7 +24,7 @@ class ValueIterationAgent(ValueEstimationAgent):
       Your value iteration agent should take an mdp on
       construction, run the indicated number of iterations
       and then act according to the resulting policy.
-    
+
       Some useful mdp methods you will use:
           mdp.getStates()
           mdp.getPossibleActions(state)
@@ -35,10 +35,10 @@ class ValueIterationAgent(ValueEstimationAgent):
     self.discount = discount
     self.iterations = iterations
     self.values = util.Counter() # value of each state; a Counter is a dict with default 0
-     
+
     "*** YOUR CODE HERE ***"
-        
-             
+
+
   def getValue(self, state):
     """
       Return the value of the state (computed in __init__).
@@ -71,4 +71,4 @@ class ValueIterationAgent(ValueEstimationAgent):
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
     return self.getPolicy(state)
-  
+
