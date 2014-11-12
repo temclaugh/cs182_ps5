@@ -76,20 +76,17 @@ class ValueIterationAgent(ValueEstimationAgent):
       there are no legal actions, which is the case at the
       terminal state, you should return None.
     """
-    "*** YOUR CODE HERE ***"
     possibleActions = self.mdp.getPossibleActions(state)
-
     if len(possibleActions) == 0:
         return None
-
-    value = float("-inf")
+    maxVal = float("-inf")
     for action in possibleActions:
-        temp = self.getQValue(state, action)
-        if temp > value:
-            value = temp
-            result = action
+        curVal = self.getQValue(state, action)
+        if curVal > maxVal:
+            finalAction = action
+            maxVal = curVal
 
-    return result
+    return finalAction
 
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
