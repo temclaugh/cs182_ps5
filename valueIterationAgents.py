@@ -36,15 +36,23 @@ class ValueIterationAgent(ValueEstimationAgent):
     self.iterations = iterations
     self.values = util.Counter() # value of each state; a Counter is a dict with default 0
 
-    "*** YOUR CODE HERE ***"
+    for _ in xrange(iterations):
+        valuesClone = self.values.copy()
+        for state in self.mdp.getStates():
+            result = float("-inf")
+            for action in self.mdp.getPossibleActions(state):
+                currentValue = self.getQValue(state,action)
+                result = max(result, currentValue)
+            result = 0 if result == float("-inf") else result
+            valuesClone[state] = result
+        self.values = valuesClone
 
 
   def getValue(self, state):
     """
       Return the value of the state (computed in __init__).
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return self.values[state]
 
 
   def getQValue(self, state, action):
@@ -55,7 +63,10 @@ class ValueIterationAgent(ValueEstimationAgent):
       necessarily create this quantity and you may have
       to derive it on the fly.
     """
-    util.raiseNotDefined()
+    qValue = 0
+    for nextState, p in self.mdp.getTransitionStatesAndProbs(state, action):
+        qValue += p * (self.mdp.getReward(state, action, nextState) + (self.discount * self.values[nextState]))
+    return qValue
 
   def getPolicy(self, state):
     """
@@ -66,7 +77,19 @@ class ValueIterationAgent(ValueEstimationAgent):
       terminal state, you should return None.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    possibleActions = self.mdp.getPossibleActions(state)
+
+    if len(possibleActions) == 0:
+        return None
+
+    value = float("-inf")
+    for action in possibleActions:
+        temp = self.getQValue(state, action)
+        if temp > value:
+            value = temp
+            result = action
+
+    return result
 
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
